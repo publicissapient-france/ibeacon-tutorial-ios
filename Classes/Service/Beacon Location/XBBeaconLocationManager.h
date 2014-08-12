@@ -4,8 +4,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreBluetooth/CoreBluetooth.h>
 #import <CoreLocation/CoreLocation.h>
+
+extern NSString * const XBBeaconLocationManagerValueChangedNotification;
 
 @interface XBBeaconLocationManager : NSObject <CLLocationManagerDelegate>
 

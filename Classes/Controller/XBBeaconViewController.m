@@ -5,11 +5,10 @@
 
 #import "XBBeaconViewController.h"
 #import "XBBeaconLocationManager.h"
-#import "XBConstants.h"
 
 @interface XBBeaconViewController()
 
-@property (nonatomic, strong) id observer;
+@property (nonatomic, strong) id locationManagerObserver;
 
 @end
 
@@ -22,12 +21,12 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.locationManagerObserver];
 }
 
 - (void)initObservers {
     __weak typeof(self) weakSelf = self;
-    self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:XBBeaconLocationManagerValueChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+    self.locationManagerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:XBBeaconLocationManagerValueChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         [weakSelf.tableView reloadData];
     }];
 }

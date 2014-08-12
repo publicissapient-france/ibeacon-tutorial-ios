@@ -13,7 +13,6 @@
 		5443EB1A1775BEC50000FFE8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5443EA7E1775BEC40000FFE8 /* MainStoryboard.storyboard */; };
 		5443EF17177620B70000FFE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5443EE73177620B70000FFE8 /* main.m */; };
 		5443EF83177620B70000FFE8 /* XBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5443EEE0177620B70000FFE8 /* XBAppDelegate.m */; };
-		5443EF85177620B70000FFE8 /* XBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5443EEE2177620B70000FFE8 /* XBConstants.m */; };
 		547C4757184499D000F8BC76 /* Xebia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 547C4753184499D000F8BC76 /* Xebia.entitlements */; };
 		549A7F34183E3FF5002B2026 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 549A7F33183E3FF5002B2026 /* Images.xcassets */; };
 		54A90CDA184B8A7400133EF9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54A90CD8184B8A6400133EF9 /* CoreLocation.framework */; };
@@ -32,8 +31,6 @@
 		5443EE73177620B70000FFE8 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5443EEDF177620B70000FFE8 /* XBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XBAppDelegate.h; sourceTree = "<group>"; };
 		5443EEE0177620B70000FFE8 /* XBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XBAppDelegate.m; sourceTree = "<group>"; };
-		5443EEE1177620B70000FFE8 /* XBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XBConstants.h; sourceTree = "<group>"; };
-		5443EEE2177620B70000FFE8 /* XBConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XBConstants.m; sourceTree = "<group>"; };
 		547C4751184499D000F8BC76 /* XebiaBeacons-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "XebiaBeacons-Info.plist"; sourceTree = "<group>"; };
 		547C4752184499D000F8BC76 /* XebiaBeacons-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XebiaBeacons-Prefix.pch"; sourceTree = "<group>"; };
 		547C4753184499D000F8BC76 /* Xebia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Xebia.entitlements; sourceTree = "<group>"; };
@@ -102,8 +99,6 @@
 				5443EE73177620B70000FFE8 /* main.m */,
 				5443EEDF177620B70000FFE8 /* XBAppDelegate.h */,
 				5443EEE0177620B70000FFE8 /* XBAppDelegate.m */,
-				5443EEE1177620B70000FFE8 /* XBConstants.h */,
-				5443EEE2177620B70000FFE8 /* XBConstants.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -241,7 +236,6 @@
 			files = (
 				5443EF17177620B70000FFE8 /* main.m in Sources */,
 				5443EF83177620B70000FFE8 /* XBAppDelegate.m in Sources */,
-				5443EF85177620B70000FFE8 /* XBConstants.m in Sources */,
 				2EE44FD96046023FA232B3C9 /* XBBeaconLocationManager.m in Sources */,
 				2EE44D7DFE80E3565AE69242 /* XBBeaconRegionDataSource.m in Sources */,
 				2EE44B9F3B6E68E409FF2AA6 /* XBBeaconViewController.m in Sources */,

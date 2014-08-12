@@ -13,11 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [self initBeaconTracking];
-    
+    [self initBeaconTracking];    
     return YES;
 }
-#pragma iBeacon notifications
 
 - (void)initBeaconTracking {
     [XBBeaconLocationManager sharedManager];

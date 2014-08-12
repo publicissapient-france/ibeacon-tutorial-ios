@@ -3,10 +3,10 @@
 // Copyright (c) 2014 Xebia. All rights reserved.
 //
 
-#import <MacTypes.h>
 #import "XBBeaconLocationManager.h"
 #import "XBBeaconRegionDataSource.h"
-#import "XBConstants.h"
+
+NSString * const XBBeaconLocationManagerValueChangedNotification = @"XBBeaconLocationManagerValueChangedNotification";
 
 @interface XBBeaconLocationManager () <UIAlertViewDelegate>
 
@@ -20,8 +20,7 @@
 
 #pragma mark - Initialization
 
-+ (XBBeaconLocationManager *)sharedManager
-{
++ (XBBeaconLocationManager *)sharedManager {
     static XBBeaconLocationManager *sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -37,30 +36,21 @@
 	return self;
 }
 
-- (void)initBeaconRegions {
-    self.regionDataSource = [XBBeaconRegionDataSource new];
-    for (CLBeaconRegion *region in self.regionDataSource.allRegions) {
-        [self.locationManager startMonitoringForRegion:region];
-        [self.locationManager requestStateForRegion:region];
+- (void)initAccordingToAuthorizationStatus {
+    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Activer iBeacon ?", @"Activer iBeacon ?")
+                                                            message:NSLocalizedString(@"Cette application permet de tester les iBeacons. Pour ce faire, il est nécessaire d'authoriser l'accès à vos donnés de localisation. Voulez-vous continuer ?", @"Cette application permet de tester les iBeacons. Pour ce faire, il est nécessaire d'authoriser l'accès à vos donnés de localisation. Voulez-vous continuer ?")
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"Non", @"Non")
+                                                  otherButtonTitles:NSLocalizedString(@"Oui, continuer", @"Oui, continuer"), nil];
+        [alertView show];
+    } else if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusRestricted) {
+        [self initialize];
+        return;
     }
 }
 
-- (void)initAccordingToAuthorizationStatus {
-	if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Activer iBeacon ?", @"Activer iBeacon ?")
-		                                                    message:NSLocalizedString(@"Cette application permet de tester les iBeacons. Pour ce faire, il est nécessaire d'authoriser l'accès à vos donnés de localisation. Voulez-vous continuer ?", @"Cette application permet de tester les iBeacons. Pour ce faire, il est nécessaire d'authoriser l'accès à vos donnés de localisation. Voulez-vous continuer ?")
-		                                                   delegate:self
-		                                          cancelButtonTitle:NSLocalizedString(@"Non", @"Non")
-		                                          otherButtonTitles:NSLocalizedString(@"Oui, continuer", @"Oui, continuer"), nil];
-		[alertView show];
-	} else if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusRestricted) {
-		[self initialize];
-		return;
-	}
-}
-
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         [self initialize];
     }
@@ -71,27 +61,20 @@
     [self initBeaconRegions];
 }
 
+- (void)initBeaconRegions {
+    self.regionDataSource = [XBBeaconRegionDataSource new];
+    for (CLBeaconRegion *region in self.regionDataSource.allRegions) {
+        [self.locationManager startMonitoringForRegion:region];
+        [self.locationManager requestStateForRegion:region];
+    }
+}
+
 - (void)initializeLocationManager {
 	// Initialise un nouveau Location Manager
 	if (!self.locationManager) {
 		self.locationManager = [[CLLocationManager alloc] init];
 		self.locationManager.delegate = self;
 	}
-}
-
-#pragma mark - Ranging
-
-- (void)startBeaconRangingInRegion:(CLRegion *)region {
-	[self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-}
-
-- (void)stopBeaconRangingInRegion:(CLRegion *)region {
-	[self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
-}
-
-- (void)postValueChangedNotification
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:XBBeaconLocationManagerValueChangedNotification object:nil userInfo:nil];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -119,7 +102,7 @@
 	}
 
 	[self postValueChangedNotification];
-    
+
 	[self startBeaconRangingInRegion:region];
 }
 
@@ -129,7 +112,7 @@
 	}
 
 	[self postValueChangedNotification];
-    
+
 	[self stopBeaconRangingInRegion:region];
 }
 
@@ -166,7 +149,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error {
 	[self postValueChangedNotification];
-    
+
 	if (error.description) {
 		NSLog(@"Location error while ranging. Description: %@", error.description);
 	}
@@ -178,10 +161,20 @@
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
 	[self postValueChangedNotification];
-    
+
 	if (error.description) {
         NSLog(@"Location error while monitoring. Description: %@", error.description);
 	}
+}
+
+#pragma mark - Ranging
+
+- (void)startBeaconRangingInRegion:(CLRegion *)region {
+    [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+}
+
+- (void)stopBeaconRangingInRegion:(CLRegion *)region {
+    [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
 }
 
 #pragma mark - Authorization status
@@ -200,8 +193,11 @@
 
 #pragma mark -
 
-- (NSArray *)allBeacons
-{
+- (void)postValueChangedNotification {
+    [[NSNotificationCenter defaultCenter] postNotificationName:XBBeaconLocationManagerValueChangedNotification object:nil userInfo:nil];
+}
+
+- (NSArray *)allBeacons {
     return _currentBeacons;
 }
 
