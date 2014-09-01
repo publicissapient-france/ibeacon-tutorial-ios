@@ -195,6 +195,10 @@ NSString * const XBBeaconLocationManagerValueChangedNotification = @"XBBeaconLoc
 
 - (void)postValueChangedNotification {
     [[NSNotificationCenter defaultCenter] postNotificationName:XBBeaconLocationManagerValueChangedNotification object:nil userInfo:nil];
+    
+    UILocalNotification *localNotification = [UILocalNotification new];
+    localNotification.alertBody = NSLocalizedString(@"Vous êtes rentrés ou sortis d'une région beacon", @"Vous êtes rentrés ou sortis d'une région beacon");
+    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
 }
 
 - (NSArray *)allBeacons {

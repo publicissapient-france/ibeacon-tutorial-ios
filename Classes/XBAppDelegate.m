@@ -1,34 +1,14 @@
-//
-//  AppDelegate.m
-//  XebiaBeacons
-//
-//  Created by Alexis Kinsella on 10/06/12.
-//  Copyright (c) 2012 Xebia France. All rights reserved.
-//
-
-#import "XBAppDelegate.h"
-#import "XBBeaconLocationManager.h"
-
-@implementation XBAppDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error {
+	[self postValueChangedNotification];
     
-    [self initBeaconTracking];    
-    return YES;
+	if (error.description) {
+		NSLog(@"Location error while ranging. Description: %@", error.description);
+	}
 }
 
-- (void)initBeaconTracking {
-    [XBBeaconLocationManager sharedManager];
+- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
+	[self postValueChangedNotification];
+	if (error.description) {
+		NSLog(@"Location error while monitoring. Description: %@", error.description);
+	}
 }
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"iBeacon event"
-                                                    message:notification.alertBody
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                          otherButtonTitles:nil];
-    
-    [alert show];
-}
-
-@end
